@@ -27,8 +27,12 @@ void setup() {
 
   plants = new ArrayList<Plant>();
 
-  spawnAreaLeftTopClose = new PVector(0, height * 0.7f, 0);
-  spawnAreaRightBottomFar = new PVector(width, height, -1000);
+  // 3D CENTER IS TRANSLATED TO SCREEN CENTER 
+  spawnAreaLeftTopClose = new PVector(-(width * 0.5) - 100, 0, 100);
+  spawnAreaRightBottomFar = new PVector((width * 0.5) + 100, 0, -1000);
+
+  //spawnAreaLeftTopClose = new PVector(-(width * 0.5), height * 0.7f, 0);
+  //spawnAreaRightBottomFar = new PVector(width, height, -1000);
 
   plantSpawnerTimer = new Timer(5000);
   plantSpawnerTimer.start();
@@ -40,11 +44,15 @@ void setup() {
 
 void draw() {
   background(20);
+  
 
   if (plantSpawnerTimer.isFinished()) {
     spawnPlantRandom();
     plantSpawnerTimer.start();
   }
+
+  pushMatrix();
+  translate(width * 0.5, height);
 
     // DRAW PLANTS
     for (Iterator it = plants.iterator(); it.hasNext();) {
@@ -57,6 +65,11 @@ void draw() {
         it.remove();
       }
     }
+    
+    fill(0,255,0);
+    circle(0,0,40);
+    
+    popMatrix();
 }
 
 void spawnPlantRandom() {
@@ -76,22 +89,24 @@ void spawnPlantRandom() {
   // RANDOM PLANT AND RANDOM POSITION IN THE BACKGROUND
 
   PVector posInit = new PVector();
-  if (plants.isEmpty()) {
+  //if (plants.isEmpty()) {
     float xPos = random(spawnAreaLeftTopClose.x, spawnAreaRightBottomFar.x);
     float yPos = random(spawnAreaLeftTopClose.y, spawnAreaRightBottomFar.y);
     float zPos = random(spawnAreaRightBottomFar.z, spawnAreaLeftTopClose.z);
+    println("Pos X: " + xPos);
     posInit.set(xPos, yPos, zPos);
-  } else {
-    // WAY TO SPACE OUT "EVENLY" AND NOT RANDOMLY
-    // DECALLER LA NOUVELLE PLANTE ~75% DU WIDTH, PUIS WRAP AROUND
-    float lastPosX = plants.get(plants.size() - 1).pivot.x;
-    lastPosX += random(width * 0.5, width * 0.75);
+  //} else {
+  //  // WAY TO SPACE OUT "EVENLY" AND NOT RANDOMLY
+  //  // DECALLER LA NOUVELLE PLANTE ~75% DU WIDTH, PUIS WRAP AROUND
+  //  float areaLength = abs(spawnAreaRightBottomFar.x - spawnAreaLeftTopClose.x);
+  //  float lastPosX = plants.get(plants.size() - 1).pivot.x;
+  //  lastPosX += random(areaLength * 0.5, areaLength * 0.75);
 
-    float xPos = lastPosX % width;
-    float yPos = random(spawnAreaLeftTopClose.y, spawnAreaRightBottomFar.y);
-    float zPos = random(spawnAreaRightBottomFar.z, spawnAreaLeftTopClose.z);
-    posInit.set(xPos, yPos, zPos);
-  }
+  //  float xPos = (lastPosX % areaLength) - areaLength * 0.5;
+  //  float yPos = random(spawnAreaLeftTopClose.y, spawnAreaRightBottomFar.y);
+  //  float zPos = random(spawnAreaRightBottomFar.z, spawnAreaLeftTopClose.z);
+  //  posInit.set(xPos, yPos, zPos);
+  //}
 
 
   Plant newPlant = new Plant(chosenFilePath.split("\\.")[0], posInit, illustration, words, true);

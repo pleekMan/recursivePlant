@@ -61,9 +61,9 @@ class Plant { //<>// //<>//
 
     pushMatrix();
     translate(pivot.x, pivot.y, pivot.z); // GLOBAL POSITION OF PLANT
-    stroke(255, 0, 0);
-    noFill();
-    circle(0, 0, 30);
+    //stroke(255, 0, 0);
+    //noFill();
+    //circle(0, 0, 30);
 
     // DISPLAY NAME BELOW THE PLANT
     //displayName();
@@ -128,8 +128,9 @@ class Plant { //<>// //<>//
             couleur = color(red(couleur), green(couleur), blue(couleur), 255); // FULL OPACITY TO COLORS
             //            p5.println("-| " + p5.red(color), p5.green(color), p5.blue(color));
 
-            if (!isAnimated) {
-              couleur = desaturateColor(couleur, 0.6f, 0.3f);
+            if (isAnimated) {
+              
+              couleur = desaturateColor(couleur, random(0,0.5), 0.8f);
             }
 
             PVector newPos = new PVector(resXStart, resYStart);
