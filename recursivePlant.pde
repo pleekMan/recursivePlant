@@ -14,7 +14,9 @@ Timer plantSpawnerTimer;
 int plantCountLimit;
 
 void setup() {
-  size(1920, 1080, P3D);
+  //size(1920, 1080, P3D);
+  size(1280, 720, P3D);
+
   frameRate(40);
   //ortho();
   //    hint(ENABLE_DEPTH_MASK);
@@ -27,24 +29,24 @@ void setup() {
 
   plants = new ArrayList<Plant>();
 
-  // 3D CENTER IS TRANSLATED TO SCREEN CENTER 
-  spawnAreaLeftTopClose = new PVector(-(width * 0.5) - 100, 0, 100);
-  spawnAreaRightBottomFar = new PVector((width * 0.5) + 100, 0, -1000);
+  // 3D CENTER IS TRANSLATED TO SCREEN CENTER
+  float debordement = width * 0.25;
+  spawnAreaLeftTopClose = new PVector(-(width * 0.5) - debordement, 0, 0);
+  spawnAreaRightBottomFar = new PVector((width * 0.5) + debordement, 0, -1000);
 
   //spawnAreaLeftTopClose = new PVector(-(width * 0.5), height * 0.7f, 0);
   //spawnAreaRightBottomFar = new PVector(width, height, -1000);
 
-  plantSpawnerTimer = new Timer(5000);
+  plantSpawnerTimer = new Timer(4000);
   plantSpawnerTimer.start();
-  
+
   plantCountLimit = 10;
-  
 }
 
 
 void draw() {
-  background(20);
-  
+  background(0);
+
 
   if (plantSpawnerTimer.isFinished()) {
     spawnPlantRandom();
@@ -53,33 +55,34 @@ void draw() {
 
   pushMatrix();
   translate(width * 0.5, height);
+  //fill(0,255,0);
+  //circle(0,0,40);
 
-    // DRAW PLANTS
-    for (Iterator it = plants.iterator(); it.hasNext();) {
-      Plant plant = (Plant) it.next();
+  // DRAW PLANTS
+  for (Iterator it = plants.iterator(); it.hasNext(); ) {
+    Plant plant = (Plant) it.next();
 
-      plant.update();
-      plant.render();
+    plant.update();
+    plant.render();
 
-      if (plant.isReadyForDeletion()) {
-        it.remove();
-      }
+    if (plant.isReadyForDeletion()) {
+      it.remove();
     }
-    
-    fill(0,255,0);
-    circle(0,0,40);
-    
-    popMatrix();
+  }
+
+
+
+  popMatrix();
 }
 
 void spawnPlantRandom() {
-     
+
   // IF OVERCROWDED, KILL A PLANT BEFORE SPAWNING ANOTHER ONE
-  if(plants.size() >= plantCountLimit){
-     killPlant();
+  if (plants.size() >= plantCountLimit) {
+    killPlant();
   }
-  
-  
+
+
   String[] plantList = loadFilenames(sketchPath() + "/data/illustrations");
   String chosenFilePath = plantList[floor(random(plantList.length))];
   //println("Plant => " + chosenFilePath);
@@ -90,11 +93,10 @@ void spawnPlantRandom() {
 
   PVector posInit = new PVector();
   //if (plants.isEmpty()) {
-    float xPos = random(spawnAreaLeftTopClose.x, spawnAreaRightBottomFar.x);
-    float yPos = random(spawnAreaLeftTopClose.y, spawnAreaRightBottomFar.y);
-    float zPos = random(spawnAreaRightBottomFar.z, spawnAreaLeftTopClose.z);
-    println("Pos X: " + xPos);
-    posInit.set(xPos, yPos, zPos);
+  float xPos = random(spawnAreaLeftTopClose.x, spawnAreaRightBottomFar.x);
+  float yPos = random(spawnAreaLeftTopClose.y, spawnAreaRightBottomFar.y);
+  float zPos = random(spawnAreaRightBottomFar.z, spawnAreaLeftTopClose.z);
+  posInit.set(xPos, yPos, zPos);
   //} else {
   //  // WAY TO SPACE OUT "EVENLY" AND NOT RANDOMLY
   //  // DECALLER LA NOUVELLE PLANTE ~75% DU WIDTH, PUIS WRAP AROUND
@@ -114,11 +116,10 @@ void spawnPlantRandom() {
   plants.add(newPlant);
 }
 
-void killPlant(){
- 
-      int randomSelect = floor(random(0, plants.size()));
-      plants.get(randomSelect).triggerShrinking();
-  
+void killPlant() {
+
+  int randomSelect = floor(random(0, plants.size()));
+  plants.get(randomSelect).triggerShrinking();
 }
 
 public PImage getIllustration(String imageFileName) {

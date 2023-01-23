@@ -1,12 +1,10 @@
-class Plant { //<>// //<>//
+class Plant { //<>// //<>// //<>//
 
 
   String name;
   //String binomialName;
   PVector pivot;
   PVector squaresOffset;
-  int resY; // in grid Modules
-  int resX;
   float startingSquare;
   float biggestSquareAllowed;
   float smallestSquareAllowed;
@@ -33,18 +31,15 @@ class Plant { //<>// //<>//
     // MOST OF THE CRUCIAL PLANT CREATION PARAMETERS ARE SET AT createPlant()
 
     pivot = _pos;
-    //    p5.println("Pivot Z: " + pivot.z);
+    println(name + " : pos => \t" + pivot.x + " \t " + pivot.y + " \t " + pivot.z);
     squaresOffset = new PVector(0, 0);
-    resY = 0; // THESE 2 ARE SET IN createPlant();
-    resX = 0;
-
     squares = new ArrayList<Square>();
 
     timerFlipping = millis();
     maxSquareFadeInDelay = 1000;
 
 
-    //    p5.println("--| Spawning new Plant => " + name);
+    //p5.println("--| Spawning new Plant => " + name);
     createPlant();
   }
 
@@ -61,9 +56,10 @@ class Plant { //<>// //<>//
 
     pushMatrix();
     translate(pivot.x, pivot.y, pivot.z); // GLOBAL POSITION OF PLANT
-    //stroke(255, 0, 0);
+    stroke(0,0,255);
     //noFill();
     //circle(0, 0, 30);
+    //line(pivot.x, pivot.y, pivot.z, pivot.x, pivot.y, 0);
 
     // DISPLAY NAME BELOW THE PLANT
     //displayName();
@@ -86,18 +82,11 @@ class Plant { //<>// //<>//
 
   public void createPlant() {
 
-    // THE *squareAllowed NUMBERS SHOULD CHANGE WITH THE resY PARAMETERS TO
-
-    //resY = 30; // THIS NUMBER ACTS AS AN ALMOST UNKNOWN CONSTANT :P
-    //resX = (int) ((float) plantImage.width / ((float) plantImage.height / resY));
-
-    //    startingSquare = resX * 2; // MAKING THE STARTING SQUARE WAY BIGGER THAN resX TO COMPENSATE FOR resY (which
-    // is always bigger)
     startingSquare = 50;
 
     biggestSquareAllowed = startingSquare / 2; // GOOD VALUES = / 2
-    smallestSquareAllowed = (float) startingSquare / 64; // GOOD VALUES = / 128
-    granularity = 0.8f;
+    smallestSquareAllowed = (float) startingSquare / 128; // GOOD VALUES = / 128
+    granularity = 0.85f;
 
     createSquaresGrid(0, 0, startingSquare);
     centerSquarePosition();
@@ -118,7 +107,7 @@ class Plant { //<>// //<>//
         // ONES)
         if (random(1) > granularity) {
 
-          float colorPickNormX = (resXStart + halfSquare) / startingSquare; //<>// //<>//
+          float colorPickNormX = (resXStart + halfSquare) / startingSquare; //<>//
           float colorPickNormY = (resYStart + halfSquare) / startingSquare;
 
           int couleur = plantImage.get((int) (plantImage.width * colorPickNormX), (int) (plantImage.height * colorPickNormY));
@@ -128,10 +117,9 @@ class Plant { //<>// //<>//
             couleur = color(red(couleur), green(couleur), blue(couleur), 255); // FULL OPACITY TO COLORS
             //            p5.println("-| " + p5.red(color), p5.green(color), p5.blue(color));
 
-            if (isAnimated) {
-              
-              couleur = desaturateColor(couleur, random(0,0.5), 0.8f);
-            }
+            float distanceFog = map(pivot.z, 0, -1000, 0.8, 0.2); // = square brigthness
+            couleur = desaturateColor(couleur, random(0, 0.5), distanceFog);
+
 
             PVector newPos = new PVector(resXStart, resYStart);
             String squareWord = words[(int) random(words.length)];
