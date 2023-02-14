@@ -64,7 +64,7 @@ class Square {
 
   public void update() {
     // SQUARE REACTION BASED ON POINTER PROXIMITY
-    setZoomFactor();
+    // setZoomFactor();
 
     // FADE IN
     if (fadeInValue < 1) {
@@ -218,7 +218,7 @@ class Square {
   }
 
   public boolean isFlipWaitFinished() {
-    return millis() - flipWaitTimer >= 10000;
+    return millis() - flipWaitTimer >= 5000;
   }
 
   public void triggerShrinking() {

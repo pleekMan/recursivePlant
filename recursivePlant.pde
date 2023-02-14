@@ -15,7 +15,7 @@ int plantCountLimit;
 
 void setup() {
   //size(1920, 1080, P3D);
-  size(1280, 720, P3D);
+  fullScreen(P3D);
 
   frameRate(40);
   //ortho();
@@ -37,7 +37,7 @@ void setup() {
   //spawnAreaLeftTopClose = new PVector(-(width * 0.5), height * 0.7f, 0);
   //spawnAreaRightBottomFar = new PVector(width, height, -1000);
 
-  plantSpawnerTimer = new Timer(4000);
+  plantSpawnerTimer = new Timer(10000);
   plantSpawnerTimer.start();
 
   plantCountLimit = 10;

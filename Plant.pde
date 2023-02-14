@@ -15,7 +15,8 @@ class Plant { //<>// //<>// //<>//
 
   ArrayList<Square> squares;
 
-  int timerFlipping;
+  Timer flippingTimer;
+  //int timerFlipping;
   int maxSquareFadeInDelay = 3000;
 
   boolean isAnimated = true;
@@ -31,11 +32,13 @@ class Plant { //<>// //<>// //<>//
     // MOST OF THE CRUCIAL PLANT CREATION PARAMETERS ARE SET AT createPlant()
 
     pivot = _pos;
-    println(name + " : pos => \t" + pivot.x + " \t " + pivot.y + " \t " + pivot.z);
+    //println(name + " : pos => \t" + pivot.x + " \t " + pivot.y + " \t " + pivot.z);
     squaresOffset = new PVector(0, 0);
     squares = new ArrayList<Square>();
 
-    timerFlipping = millis();
+    flippingTimer = new Timer(500);
+    flippingTimer.start();
+
     maxSquareFadeInDelay = 1000;
 
 
@@ -203,10 +206,11 @@ class Plant { //<>// //<>// //<>//
 
   public void flippingProcess() {
 
-    int freq = 500; // EVERY xxxx MILLISECONDS
-    if (millis() - timerFlipping >= freq) {
+    //int freq = 500; // EVERY xxxx MILLISECONDS
+    if(flippingTimer.isFinished()){
       flipRandomSquare();
-      timerFlipping = millis();
+      //println("-- || FLIPPING A SQUARE");
+      flippingTimer.start();
     }
   }
 
@@ -218,7 +222,7 @@ class Plant { //<>// //<>// //<>//
   }
 
   public void flipRandomSquare() {
-    int rnd = (int) random(squares.size());
+    int rnd = floor(random(squares.size()));
     squares.get(rnd).flip();
   }
 
