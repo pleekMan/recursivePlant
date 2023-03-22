@@ -218,11 +218,11 @@ class Square {
   }
 
   public boolean isFlipWaitFinished() {
-    return millis() - flipWaitTimer >= 5000;
+    return millis() - flipWaitTimer >= 15000;
   }
 
   public void triggerShrinking() {
-    sizeSpeed = random(0.5f, 2f);
+    sizeSpeed = random(0.3f, 1f);
     isShrinking = true;
   }
 

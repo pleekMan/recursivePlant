@@ -15,12 +15,13 @@ int plantCountLimit;
 
 void setup() {
   //size(1920, 1080, P3D);
-  fullScreen(P3D);
+  fullScreen(P3D,1);
+  noCursor();
 
-  frameRate(40);
+  frameRate(30);
   //ortho();
   //    hint(ENABLE_DEPTH_MASK);
-  hint(ENABLE_DEPTH_SORT); // BILLBOARDS RENDER ALPHA CORRECTLY. MIGHT SLOW DOWN PERFORMANCE.
+  //hint(ENABLE_DEPTH_SORT); // BILLBOARDS RENDER ALPHA CORRECTLY. MIGHT SLOW DOWN PERFORMANCE.
   imageMode(CENTER);
   rectMode(CENTER);
 
